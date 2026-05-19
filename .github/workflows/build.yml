@@ -3,28 +3,29 @@ name: Build Solana Program
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: backpackapp/build:v0.30.0
     steps:
     - uses: actions/checkout@v3
     
+    - name: Install Solana CLI
+      run: |
+        sh -c "$(curl -sSfL https://release.solana.com/v1.18.26/install)"
+        echo "$HOME/.local/share/solana/install/active_release/bin" >> $GITHUB_PATH
+    
+    - name: Install Anchor
+      run: |
+        cargo install --git https://github.com/coral-xyz/anchor --tag v0.29.0 anchor-cli --locked
+    
     - name: Build program
-      run: anchor build
-      working-directory: .
+      run: |
+        anchor build
     
-    - name: List build output
-      run: ls -la target/deploy/
-    
-    - name: Upload build artifact
+    - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: leveraged-meme-program
         path: target/deploy/leveraged_meme.so
-        retention-days: 30
