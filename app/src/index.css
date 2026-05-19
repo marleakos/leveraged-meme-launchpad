@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-purple-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-purple-500;
+}
+
+/* Wallet adapter custom styles */
+.wallet-adapter-button {
+  @apply !bg-purple-600 hover:!bg-purple-700 !rounded-lg !font-medium;
+}
+
+.wallet-adapter-modal-wrapper {
+  @apply !bg-gray-900 !border !border-purple-500/20;
+}
+
+.wallet-adapter-modal-title {
+  @apply !text-white;
+}

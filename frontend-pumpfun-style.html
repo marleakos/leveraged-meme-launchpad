@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alt.fun - Launch and trade leveraged memecoins on Solana</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        /* Header - Simple white bar */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #00d084, #00a884);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #333;
+        }
+
+        .connect-wallet {
+            background: #00d084;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .connect-wallet:hover {
+            background: #00b874;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Launch Section - Centered card */
+        .launch-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .launch-section h1 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #333;
+        }
+
+        .launch-section p {
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .launch-btn {
+            background: #00d084;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .launch-btn:hover {
+            background: #00b874;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .view-all {
+            color: #00d084;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* King of the Hill - Featured token */
+        .king-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .king-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .crown {
+            font-size: 24px;
+        }
+
+        .king-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .king-token {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .king-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .king-info {
+            flex: 1;
+        }
+
+        .king-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .king-meta {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .king-stats {
+            display: flex;
+            gap: 24px;
+            margin-top: 12px;
+        }
+
+        .king-stat {
+            text-align: center;
+        }
+
+        .king-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .king-stat-label {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .king-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-buy {
+            background: #00d084;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-sell {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Token List - Table style like pump.fun */
+        .token-list-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .token-table-header {
+            display: grid;
+            grid-template-columns: 40px 2fr 1fr 1fr 1fr 1fr 100px;
+            padding: 12px 16px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+            color: #999;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .token-row {
+            display: grid;
+            grid-template-columns: 40px 2fr 1fr 1fr 1fr 1fr 100px;
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .token-row:hover {
+            background: #f9f9f9;
+        }
+
+        .token-row:last-child {
+            border-bottom: none;
+        }
+
+        .token-rank {
+            font-size: 14px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .token-info-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .token-image-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .token-name-cell {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .token-symbol-cell {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .token-leverage {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .token-leverage.long {
+            color: #00d084;
+        }
+
+        .token-leverage.short {
+            color: #ff4444;
+        }
+
+        .token-price-cell {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+        }
+
+        .token-mcap-cell {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .token-volume-cell {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .token-action-cell {
+            text-align: right;
+        }
+
+        .btn-trade {
+            background: #00d084;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-trade:hover {
+            background: #00b874;
+        }
+
+        /* Launch Form */
+        .launch-form-section {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #00d084;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .leverage-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .leverage-option {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            background: white;
+        }
+
+        .leverage-option:hover {
+            border-color: #00d084;
+        }
+
+        .leverage-option.active {
+            background: #00d084;
+            color: white;
+            border-color: #00d084;
+        }
+
+        .direction-selector {
+            display: flex;
+            gap: 8px;
+        }
+
+        .direction-option {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            background: white;
+        }
+
+        .direction-option:hover {
+            border-color: #00d084;
+        }
+
+        .direction-option.active.long {
+            background: #00d084;
+            color: white;
+            border-color: #00d084;
+        }
+
+        .direction-option.active.short {
+            background: #ff4444;
+            color: white;
+            border-color: #ff4444;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #00d084;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            background: #00b874;
+        }
+
+        .form-note {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Token Detail Page */
+        .token-detail-header {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .token-detail-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .token-detail-info {
+            display: flex;
+            gap: 16px;
+        }
+
+        .token-detail-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .token-detail-title h1 {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+
+        .token-detail-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .token-detail-price {
+            text-align: right;
+        }
+
+        .price-main {
+            font-size: 32px;
+            font-weight: bold;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .price-sub {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .token-detail-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .detail-stat {
+            text-align: center;
+        }
+
+        .detail-stat-label {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .detail-stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        /* Trading Section */
+        .trading-section {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 20px;
+        }
+
+        .chart-container {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+            min-height: 400px;
+        }
+
+        .chart-placeholder {
+            height: 350px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        .trade-panel {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .trade-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .trade-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .trade-tab.active.buy {
+            background: #00d084;
+            color: white;
+        }
+
+        .trade-tab.active.sell {
+            background: #ff4444;
+            color: white;
+        }
+
+        .trade-input-group {
+            margin-bottom: 12px;
+        }
+
+        .trade-input-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .trade-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .trade-summary {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 8px;
+            border-top: 1px solid #ddd;
+            font-weight: 600;
+        }
+
+        .trade-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+        }
+
+        .trade-submit.buy {
+            background: #00d084;
+        }
+
+        .trade-submit.sell {
+            background: #ff4444;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 13px;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #333;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            .launch-section {
+                padding: 24px;
+            }
+
+            .stats-bar {
+                gap: 20px;
+            }
+
+            .token-table-header,
+            .token-row {
+                grid-template-columns: 40px 2fr 1fr 100px;
+            }
+
+            .token-table-header > :nth-child(3),
+            .token-table-header > :nth-child(4),
+            .token-table-header > :nth-child(5),
+            .token-row > :nth-child(4),
+            .token-row > :nth-child(5),
+            .token-row > :nth-child(6) {
+                display: none;
+            }
+
+            .trading-section {
+                grid-template-columns: 1fr;
+            }
+
+            .token-detail-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">⚡</div>
+            alt.fun
+        </a>
+        <nav class="nav-links">
+            <a href="#tokens">Tokens</a>
+            <a href="#launch">Launch</a>
+            <a href="#about">About</a>
+            <button class="connect-wallet">Connect Wallet</button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Launch Section -->
+        <section class="launch-section" id="launch">
+            <h1>Launch a leveraged memecoin</h1>
+            <p>2x, 3x, 5x leverage on SOL, BTC, ETH. Graduate to Raydium at $69k market cap.</p>
+            <a href="#launch-form" class="launch-btn">Launch Token</a>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value">247</div>
+                    <div class="stat-label">Tokens Created</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Graduated</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">1.2M</div>
+                    <div class="stat-label">SOL Volume</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$2.4M</div>
+                    <div class="stat-label">Market Cap</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- King of the Hill -->
+        <div class="section-header">
+            <h2 class="section-title">👑 King of the Hill</h2>
+        </div>
+        <section class="king-section">
+            <div class="king-token">
+                <div class="king-image">🐻</div>
+                <div class="king-info">
+                    <div class="king-name">Bear Hunter</div>
+                    <div class="king-meta">$BEAR • 5x Short BTC-PERP</div>
+                    <div class="king-stats">
+                        <div class="king-stat">
+                            <div class="king-stat-value">$128.4K</div>
+                            <div class="king-stat-label">Market Cap</div>
+                        </div>
+                        <div class="king-stat">
+                            <div class="king-stat-value">892</div>
+                            <div class="king-stat-label">Holders</div>
+                        </div>
+                        <div class="king-stat">
+                            <div class="king-stat-value">45.2K</div>
+                            <div class="king-stat-label">Volume</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="king-actions">
+                    <button class="btn-buy">Buy</button>
+                    <button class="btn-sell">Sell</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Token List -->
+        <div class="section-header">
+            <h2 class="section-title">🔥 Trending Tokens</h2>
+            <a href="#" class="view-all">View all →</a>
+        </div>
+        <section class="token-list-section" id="tokens">
+            <div class="token-table-header">
+                <div>#</div>
+                <div>Token</div>
+                <div>Leverage</div>
+                <div>Price</div>
+                <div>Market Cap</div>
+                <div>Volume</div>
+                <div></div>
+            </div>
+            
+            <a href="#token-detail" class="token-row">
+                <div class="token-rank">1</div>
+                <div class="token-info-cell">
+                    <div class="token-image-small">B</div>
+                    <div>
+                        <div class="token-name-cell">Super Bull</div>
+                        <div class="token-symbol-cell">$BULL</div>
+                    </div>
+                </div>
+                <div class="token-leverage long">3x Long</div>
+                <div class="token-price-cell">0.000045</div>
+                <div class="token-mcap-cell">$45.2K</div>
+                <div class="token-volume-cell">12.5K</div>
+                <div class="token-action-cell">
+                    <button class="btn-trade">Trade</button>
+                </div>
+            </a>
+
+            <a href="#token-detail" class="token-row">
+                <div class="token-rank">2</div>
+                <div class="token-info-cell">
+                    <div class="token-image-small" style="background: linear-gradient(135deg, #4488ff, #0044cc);">E</div>
+                    <div>
+                        <div class="token-name-cell">Ethereum Maxi</div>
+                        <div class="token-symbol-cell">$ETHMAX</div>
+                    </div>
+                </div>
+                <div class="token-leverage long">2x Long</div>
+                <div class="token-price-cell">0.000024</div>
+                <div class="token-mcap-cell">$23.8K</div>
+                <div class="token-volume-cell">8.2K</div>
+                <div class="token-action-cell">
+                    <button class="btn-trade">Trade</button>
+                </div>
+            </a>
+
+            <a href="#token-detail" class="token-row">
+                <div class="token-rank">3</div>
+                <div class="token-info-cell">
+                    <div class="token-image-small" style="background: linear-gradient(135deg, #ff8800, #cc6600);">D</div>
+                    <div>
+                        <div class="token-name-cell">Doge Leverage</div>
+                        <div class="token-symbol-cell">$DOGE5X</div>
+                    </div>
+                </div>
+                <div class="token-leverage long">5x Long</div>
+                <div class="token-price-cell">0.000008</div>
+                <div class="token-mcap-cell">$8.2K</div>
+                <div class="token-volume-cell">5.1K</div>
+                <div class="token-action-cell">
+                    <button class="btn-trade">Trade</button>
+                </div>
+            </a>
+
+            <a href="#token-detail" class="token-row">
+                <div class="token-rank">4</div>
+                <div class="token-info-cell">
+                    <div class="token-image-small" style="background: linear-gradient(135deg, #ff6b9d, #c44569);">P</div>
+                    <div>
+                        <div class="token-name-cell">Pepe 3x</div>
+                        <div class="token-symbol-cell">$PEPE3X</div>
+                    </div>
+                </div>
+                <div class="token-leverage short">3x Short</div>
+                <div class="token-price-cell">0.000015</div>
+                <div class="token-mcap-cell">$15.3K</div>
+                <div class="token-volume-cell">4.8K</div>
+                <div class="token-action-cell">
+                    <button class="btn-trade">Trade</button>
+                </div>
+            </a>
+
+            <a href="#token-detail" class="token-row">
+                <div class="token-rank">5</div>
+                <div class="token-info-cell">
+                    <div class="token-image-small" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">S</div>
+                    <div>
+                        <div class="token-name-cell">Solana Bull</div>
+                        <div class="token-symbol-cell">$SOLBULL</div>
+                    </div>
+                </div>
+                <div class="token-leverage long">5x Long</div>
+                <div class="token-price-cell">0.000062</div>
+                <div class="token-mcap-cell">$62.1K</div>
+                <div class="token-volume-cell">18.9K</div>
+                <div class="token-action-cell">
+                    <button class="btn-trade">Trade</button>
+                </div>
+            </a>
+        </section>
+
+        <!-- Launch Form -->
+        <section class="launch-form-section" id="launch-form">
+            <h2 class="form-title">Create Token</h2>
+            <p class="form-subtitle">Deploy a leveraged meme token on Solana</p>
+            
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Token Name</label>
+                        <input type="text" class="form-input" placeholder="e.g., Super Bull">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Symbol</label>
+                        <input type="text" class="form-input" placeholder="e.g., BULL">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Leverage</label>
+                    <div class="leverage-selector">
+                        <div class="leverage-option">2x</div>
+                        <div class="leverage-option active">3x</div>
+                        <div class="leverage-option">5x</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Direction</label>
+                    <div class="direction-selector">
+                        <div class="direction-option active long">Long</div>
+                        <div class="direction-option">Short</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Underlying Asset</label>
+                    <select class="form-input">
+                        <option>SOL-PERP</option>
+                        <option>BTC-PERP</option>
+                        <option>ETH-PERP</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Launch Token</button>
+                <p class="form-note">Cost: 0.1 SOL • Graduates at $69k market cap</p>
+            </form>
+        </section>
+
+        <!-- Token Detail (Hidden by default) -->
+        <section id="token-detail" style="margin-top: 40px;">
+            <div class="token-detail-header">
+                <div class="token-detail-top">
+                    <div class="token-detail-info">
+                        <div class="token-detail-image">B</div>
+                        <div class="token-detail-title">
+                            <h1>Super Bull</h1>
+                            <p>$BULL • 3x Long SOL-PERP</p>
+                        </div>
+                    </div>
+                    <div class="token-detail-price">
+                        <div class="price-main">0.000045 SOL</div>
+                        <div class="price-sub">$0.002025 USD</div>
+                    </div>
+                </div>
+                <div class="token-detail-stats">
+                    <div class="detail-stat">
+                        <div class="detail-stat-label">Market Cap</div>
+                        <div class="detail-stat-value">$45.2K</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-label">Liquidity</div>
+                        <div class="detail-stat-value">5,230 SOL</div>
+                    </div>
+                    <div class="detail-stat">
+                        <div class="detail-stat-label">Holders</div>
+                        <div class="detail-stat-value">142</div>
+                    </div>

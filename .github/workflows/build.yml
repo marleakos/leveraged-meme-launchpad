@@ -1,0 +1,30 @@
+name: Build Solana Program
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: backpackapp/build:v0.30.0
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build program
+      run: anchor build
+      working-directory: .
+    
+    - name: List build output
+      run: ls -la target/deploy/
+    
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: leveraged-meme-program
+        path: target/deploy/leveraged_meme.so
+        retention-days: 30
