@@ -1,0 +1,28 @@
+image: rust:1.80
+
+stages:
+  - build
+
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/cargo
+  SOLANA_VERSION: "1.18.26"
+  ANCHOR_VERSION: "0.29.0"
+
+before_script:
+  - apt-get update && apt-get install -y pkg-config libssl-dev libudev-dev
+  - sh -c "$(curl -sSfL https://release.solana.com/v${SOLANA_VERSION}/install)"
+  - export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
+  - cargo install --git https://github.com/coral-xyz/anchor --tag v${ANCHOR_VERSION} anchor-cli --locked
+
+build:
+  stage: build
+  script:
+    - anchor build
+  artifacts:
+    paths:
+      - target/deploy/*.so
+    expire_in: 1 week
+  cache:
+    paths:
+      - cargo/
+      - target/
