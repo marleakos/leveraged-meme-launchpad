@@ -1,14 +1,19 @@
-FROM rust:1.75-slim
+# Minimal Dockerfile for building Solana programs
+FROM rust:1.80-slim
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    libudev-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Solana CLI
-RUN apt-get update && apt-get install -y curl libssl-dev pkg-config && \
-    curl -sL https://release.solana.com/v1.18.26/solana-release-x86_64-unknown-linux-gnu.tar.bz2 | tar -xjf - -C /usr/local --strip-components=1 && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN sh -c "$(curl -sSfL https://release.solana.com/v1.18.26/install)" && \
+    export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 # Install Anchor
-RUN cargo install --git https://github.com/coral-xyz/anchor --tag v0.29.0 anchor-cli
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag v0.29.0 anchor-cli --locked
 
 WORKDIR /workspace
-COPY . .
-
-RUN anchor build
+CMD ["anchor", "build"]

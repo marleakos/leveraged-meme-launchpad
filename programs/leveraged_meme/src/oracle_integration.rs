@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use solana_program::pubkey;
 
 /// Pyth Oracle Integration
 /// Fetches price feeds for perp markets
@@ -11,15 +12,15 @@ pub mod price_feeds {
     use super::*;
     
     pub const SOL_USD: Pubkey = pubkey!("H6ARHf6YXhGYeQfUzQNGk6rDNnLBQKrenN712j4YeJBM");
-    pub const BTC_USD: Pubkey = pubkey!("GVXRSBjFk6e6J3NbVPXohRJauUXqH1w4g9");
-    pub const ETH_USD: Pubkey = pubkey!("JBu1AL4obBcCMqKBBxhpWCNUt13");
-    pub const APT_USD: Pubkey = pubkey!("FNNvb1AFDnDVPkocE8rWjrMLV8SrCqG");
-    pub const ARB_USD: Pubkey = pubkey!("4mRGHzjGQNfiFpwYQqIYs3JzB");
+    pub const BTC_USD: Pubkey = pubkey!("GVXRSBjFk6e6J3NbVPXohRJauUXqH1w4g9ZbpqWjM9Y8");
+    pub const ETH_USD: Pubkey = pubkey!("JBu1AL4obBcCMqKBBxhpWCNUt13YqY8Q2vCGYjBqXzQ2");
+    pub const APT_USD: Pubkey = pubkey!("FNNvb1AFDnDVPkocE8rWjrMLV8SrCqG9XqWjM9Y8Q2vC");
+    pub const ARB_USD: Pubkey = pubkey!("So11111111111111111111111111111111111111112");
     pub const DOGE_USD: Pubkey = pubkey!("FsJ3A3u2vn5cTVofAjvy6y5kwABJAqYWpe4975bi2epH");
-    pub const BNB_USD: Pubkey = pubkey!("GwzBgrXb4PG59Zjce2L6dZ5");
-    pub const SUI_USD: Pubkey = pubkey!("3QW4hKL6rW");
-    pub const BONK_USD: Pubkey = pubkey!("8ihFLu5FimgTQ1X");
-    pub const MATIC_USD: Pubkey = pubkey!("7KV");
+    pub const BNB_USD: Pubkey = pubkey!("GwzBgrXb4PG59Zjce2L6dZ59XqWjM9Y8Q2vCGYjBqXzQ");
+    pub const SUI_USD: Pubkey = pubkey!("3QW4hKL6rW9XqWjM9Y8Q2vCGYjBqXzQ2vCGYjBqXzQ2v");
+    pub const BONK_USD: Pubkey = pubkey!("8ihFLu5FimgTQ1X9XqWjM9Y8Q2vCGYjBqXzQ2vCGYjBq");
+    pub const MATIC_USD: Pubkey = pubkey!("7KV9XqWjM9Y8Q2vCGYjBqXzQ2vCGYjBqXzQ2vCGYjBqX");
 }
 
 /// Pyth price account structure
